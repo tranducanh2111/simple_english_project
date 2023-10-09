@@ -1,58 +1,99 @@
-import React from 'react'
-import Category from '../../components/Category'
-import Heading from '../../components/Heading'
-import Button from '../../components/Button'
-import ArrowRight from 'public/arrow-right.svg'
-import PrimaryCard, { TestProps } from '../../components/PrimaryCard'
-export interface CoursesSectionProps {
-  collectionList: {
-    title: string
-    tests: TestProps[]
-  }[]
-}
-const CoursesSection: React.FC<CoursesSectionProps> = ({collectionList}) => {
-  const [selectedCategory, setSelectedCategory] = React.useState(0)
-  const handleClick = (index:number) => {
-    setSelectedCategory(index);
-  }
+import React, { useState, useRef, useEffect } from 'react';
+import testOverviewData from '@/dummy-data/testOverview.json';
+import HeadingSection from '@/components/SectionHeader';
+import PrimaryCard from "@/components/PrimaryCard";
 
-  const categoryList = collectionList.map((collection) => collection.title)
+type TestData = {
+    imageURL: string;
+    name: string;
+    descriptions: string;
+    testURL: string;
+};
 
-  return (
-    <div className="max-w-[1160px]">
-      <div className="flex flex-col sm:flex-row items-center justify-between">
-        <div className="introduction flex items-center w-[100%]">
-          <Heading
-            title="Courses"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore"
-            titleClassName="text-h2 font-bold"
-            descriptionClassName="my-[8px]"
-            className="max-w-[432px]"
-          />
-          <div className="view_more_button ml-auto">
-            <Button
-              title="View More"
-              bgColor="white"
-              icon={ArrowRight}
-              // onClick={handleClick}
-              classNameIcon="mr-[8px]"
-              className="flex items-center text-primary"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="courses">
-        <div className="">
-          <Category categoryList={categoryList} selectedCategory={selectedCategory} onClick={handleClick} />
-        </div>
-        <div className='mt-[20px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-10'>
-          {collectionList[selectedCategory].tests.map((test, index) => (
-            <PrimaryCard key={index} {...test} />
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
+// Define the type for your testOverview data
+type TestOverview = {
+	[key: string]: {
+		imageURL: string;
+		name: string;
+		descriptions: string;
+		testURL: string;
+	}[];
+};
 
-export default CoursesSection
+const FilteredListPanel = () => {
+    const testOverview: TestOverview = testOverviewData;
+    const categories = Object.keys(testOverview);
+
+    // Pagination variables
+    const itemsPerPage = 3;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // Filter variables
+    const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
+    const [filteredData, setFilteredData] = useState<TestData[]>([]);
+	
+
+	// Calculate the range of items to display on the current page
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const itemsToShow = filteredData.slice(startIndex, endIndex);
+
+	// Check if the window width is smaller than "sm" breakpoint
+
+	useEffect(() => {
+		// Initialize filtered data when the component mounts
+		const selectedCategory = categories[selectedCategoryIndex];
+		const filteredPeople = selectedCategory
+		? testOverview[selectedCategory]
+		: Object.values(testOverview).flat();
+		setFilteredData(filteredPeople);
+	}, [selectedCategoryIndex, categories]);
+
+	return (
+    <>
+		<main className="flex flex-col justify-center p-[20px] sm:p-0">
+				{/* Heading Section */}
+				<HeadingSection
+					categories={categories}
+					inputData={testOverview} // Pass the testOverview data as a prop
+					selectedCategoryIndex={selectedCategoryIndex}
+					setSelectedCategoryIndex={setSelectedCategoryIndex}
+					setFilteredData={setFilteredData}
+					headingText={"Courses"}
+					paragraphText={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae laudantium, aliquam quisquam amet assumenda facere necessitatibus?"}
+					viewMoreLink={"#"}
+					showFilterBar={true}
+				/>
+				{/* Pagination bar
+				<div className="pagination-bar">
+				{Array.from({ length: totalPages }, (_, i) => (
+					<button
+					key={i + 1}
+					className={`pagination-button ${currentPage === i + 1 ? 'active' : ''}`}
+					onClick={() => handlePageChange(i + 1)}
+					>
+					{i + 1}
+					</button>
+				))}
+				</div> */}
+		</main>
+		{/* <div className='w-full h-[380px] sm:h-[470px] sm:px-[40px]  overflow-x-auto hide-scrollbar'> */}
+		<div className='w-full h-[480px] overflow-x-auto hide-scrollbar'>
+			<div className="flex justify-between sm:w-full w-[210vw] sm:min-w-[]">
+			{/* <div className="w-full min-w-[820px]"> */}
+				{itemsToShow.map((test, index) => (
+					<PrimaryCard
+						key={index}
+						imageURL={test.imageURL}
+						name={test.name}
+						descriptions={test.descriptions}
+						testURL={test.testURL}
+					/>
+				))}
+			</div>
+		</div>
+  	</>
+	);
+};
+
+export default FilteredListPanel;

@@ -128,7 +128,7 @@ const Home: React.FC = () => {
       </Head>
       <div className="homepage relative bg-white">
         <HomeBanner imageList={imageList} />
-        <div className="max-w-[1160px] flex flex-col mx-auto mt-[60px] mb-10 gap-[60px] px-5">
+        <div className="max-w-[1170px] flex flex-col mx-auto mt-[60px] mb-10 gap-[60px] px-5">
           <CoursesSection collectionList={collectionList}/>
           <WorkshopSection />
           <BlocksSection />

@@ -48,10 +48,14 @@ const BookTest = () => {
           showFilterBar={false}
         />
       </div>
-      <div className='space-y-[20px] sm:space-y-[40px] flex flex-col items-center'>
+      <div className='flex flex-col items-center'>
+        <div className='w-[65%] space-y-[20px] sm:space-y-[40px]'>
         {getSelectedUnitData().map((test, index) => (
-          <SkillTestBoxList key={index} testData={test} />
+
+            <SkillTestBoxList key={index} testData={test} />
+
         ))}
+        </div>
       </div>
     </section>
   );

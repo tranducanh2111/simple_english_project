@@ -3,9 +3,17 @@ import Button from '@/components/Button';
 import PreviousArrowSvg from '../../public/previous-arrow.svg';
 import NextArrowSvg from '../../public/next-arrow.svg';
 
+// Define a type for the test data
+type TestData = {
+    imageURL: string;
+    name: string;
+    descriptions: string;
+    testURL: string;
+};
+
 // Define a type for the inputData object
 type inputData = {
-    [key: string]: unknown[];
+    [key: string]: TestData[];
 };
 
 const Tab = ({
@@ -18,7 +26,7 @@ const Tab = ({
     categories: string[];
     selectedCategoryIndex: number;
     setSelectedCategoryIndex: (index: number) => void;
-    setFilteredData: (data: unknown[]) => void;
+    setFilteredData: (data: TestData[]) => void;
     inputData: inputData;
 }) => {
     // Pagination variables
@@ -28,6 +36,7 @@ const Tab = ({
 
     // Function to handle category filter changes
     useEffect(() => {
+        // Update the filtered data when the selected category changes
         const selectedCategory = categories[selectedCategoryIndex];
         const filteredPeople = selectedCategory
         ? inputData[selectedCategory]
@@ -41,21 +50,30 @@ const Tab = ({
         setSelectedCategoryIndex(index);
     };
 
+    // Function to navigate to the next category
     const handleNextCategory = () => {
         const nextIndex = (selectedCategoryIndex + 1) % categories.length;
         setSelectedCategoryIndex(nextIndex);
     };
 
+    // Function to navigate to the previous category
     const handlePreviousCategory = () => {
         const previousIndex = (selectedCategoryIndex - 1 + categories.length) % categories.length;
         setSelectedCategoryIndex(previousIndex);
     };
 
     return (
-        <div className={`w-full grid grid-cols-[46px_minmax(0px,_1fr)_46px] gap-1`}>
+        <div className={`w-full flex items-center mt-[5px] space-x-1 hide-scrollbar`}>
             {/* Button switch to the previous category */}
             <Button icon={PreviousArrowSvg} onClick={handlePreviousCategory} bgColor='#FF6D33' className='h-[36px] w-[46px] px-[15px] py-[6px]'/>
             <div className={`overflow-x-auto whitespace-nowrap space-x-1 flex items-center hide-scrollbar`} ref={filterButtonContainerRef}>
+                {/* Button that allows choosing every topic */}
+                {/* <Button
+                    label="All"
+                    variant={selectedCategoryIndex === -1 ? 'primary' : 'secondary'}
+                    onClick={() => setSelectedCategoryIndex(-1)}
+                    className='h-[36px] px-[12px] text-sm'
+                /> */}
                 {/* Button for categories */}
                 {categories.map((category, index) => (
                     <Button

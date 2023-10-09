@@ -1,18 +1,25 @@
 import React from 'react';
 import Tab from "@/components/Tab";
 import Button from './Button';
-import ThinArrow from "/public/thin-arrow.svg"
-import Link from 'next/link';
+import ThinArrow from "./../../public/thin-arrow.svg"
+
+// Define the type for individual test data
+type TestData = {
+    imageURL: string;
+    name: string;
+    descriptions: string;
+    testURL: string;
+};
 
 // Define the type for the test overview data
 type TestOverview = {
-    [key: string]: unknown[];
+    [key: string]: TestData[];
 };
 
 type BaseHeadingSectionProps = {
     headingText: string; // Prop for the heading text
-    paragraphText?: string; // Prop for the paragraph text
-    viewMoreLink?: string; // Prop for the View More link URL
+    paragraphText: string; // Prop for the paragraph text
+    viewMoreLink: string; // Prop for the View More link URL
 };
 
 type WithFilterBarProps = BaseHeadingSectionProps & {
@@ -20,7 +27,7 @@ type WithFilterBarProps = BaseHeadingSectionProps & {
     categories: string[];
     selectedCategoryIndex: number;
     setSelectedCategoryIndex: (index: number) => void;
-    setFilteredData: (data: unknown) => void;
+    setFilteredData: (data: TestData[]) => void;
     inputData: TestOverview;
 };
 
@@ -61,11 +68,9 @@ const HeadingSection = ({
                 )}
             </div>
             {/* View More button */}
-            {viewMoreLink && (
-            <Link href={viewMoreLink} className="flex items-center max-w-content h-[30px] text-primary px-1 py-[4px] rounded-[2px] ml-auto">
+            <a href={viewMoreLink} className="flex items-center max-w-content h-[30px] text-primary px-1 py-[4px] rounded-[2px] ml-auto">
                 <Button className='font-medium' icon={ThinArrow} title='View more'/>
-            </Link>
-            )}
+            </a>
         </div>
     );
 };

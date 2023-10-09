@@ -3,7 +3,7 @@
         {
             "book_name": "IELTS Mock Test 2023",
             "description": "Achieve fluency with 15 units, 4 practice tests per unit, and Reading, Listening, Writing, and Speaking skills. Your path to English excellence starts here.",
-            "bookURL": "/",
+            "bookURL": "testlink/",
             "units": [
                 {
                     "unit_number": 1,
@@ -1825,7 +1825,7 @@
         {
             "book_name": "IELTS Mock Test 2021",
             "description": "Demo book 2.",
-            "bookURL": "/",
+            "bookURL": "testlink/",
             "units": [
                 {
                     "unit_number": 1,
@@ -3647,7 +3647,7 @@
         {
             "book_name": "IELTS Mock Test 2022",
             "description": "Demo test book 3.",
-            "bookURL": "/",
+            "bookURL": "testlink/",
             "units": [
                 {
                     "unit_number": 1,
